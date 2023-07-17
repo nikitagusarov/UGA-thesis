@@ -21,8 +21,7 @@ bibliography: [bibliography/bibliography.bib]
 
 format:
   pdf:
-    documentclass: scrreprt
-    template: templates/template.tex
+    template: templates/ugathesis.tex
     title-fr: "Titre de thèse en français"
     logos:
       - uga
@@ -55,7 +54,6 @@ format:
       Epigraphe
     dedicace: |
       Dédicace
-    fontfamily: libertinus
     include-in-header: 
       - templates/packages.tex
       - text: |
