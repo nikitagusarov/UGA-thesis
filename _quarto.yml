@@ -1,0 +1,105 @@
+project:
+  type: book
+  output-dir: output
+
+book:
+  title: "Thesis title in english"
+  # Subtitle is not used in this template
+  output-file: "manuscript"
+  date: "01/01/2000"
+  # Because the index file can not be empty
+  # (othervise it will add an empty chapter)
+  # we use it as an introduction instead
+  chapters:
+    - index.qmd
+    - manuscript/chapter_1/chapter_1.qmd
+    - manuscript/conclusion.qmd
+    - manuscript/annexes.qmd
+    - manuscript/references.qmd
+
+bibliography: [bibliography/bibliography.bib]
+
+format:
+  pdf:
+    documentclass: scrreprt
+    template: templates/template.tex
+    title-fr: "Titre de thèse en français"
+    logos:
+      - uga
+    thesis: true
+    institute: l'Université Grenoble Alpes
+    ed: ED - Ecole Doctorale
+    spec: Spécialitée
+    ur: Unité de recherche
+    author:
+      - "Prenom NOM" 
+    director:
+      name: "Director"
+      affiliation: "AFFILIATION directeur"
+    co-director:
+      name: "Co-directeur"
+      affiliation: "AFFILIATION Co-directeur"
+    rapporteurs:
+      - name: "Rapporteur 1"
+        affiliation: "AFFILIATION Rapporteur 1"
+      - name: "Rapporteur 2"
+        affiliation: "AFFILIATION Rapporteur 2"
+    examinateurs:
+      - name: "Examinateur 1"
+        affiliation: "AFFILIATION Examinateur 1"
+    invites:
+      - name: "Invité 1"
+        affiliation: "AFFILIATION Invité 1"
+    soutenance-date: 01/01/2001
+    epigraphe: |
+      Epigraphe
+    dedicace: |
+      Dédicace
+    fontfamily: libertinus
+    include-in-header: 
+      - templates/packages.tex
+      - text: |
+          \usepackage{imakeidx}
+          \makeindex[intoc]
+          \usepackage{lipsum}
+    # Other parameters and functionnalities
+    # Pay attention as with Quarto those params may have different meaning
+    # title-meta:
+    # author-meta:
+    # lang:
+    # subject:
+    # keywords:
+    # colorlinks:
+    # filecolor:
+    # citecolor:
+    linkcolor: black
+    urlcolor: black
+    # draft:
+    # verbatim-in-note:
+    # nocite:
+    # csquotes:
+    # lang:
+    # babel-lang:
+    # babel-otherlangs:
+    # pagestyle:
+    # block-headings:
+    # numbersections:
+    # secnumdepth:
+    # links-as-notes:
+    # graphics:
+    # tables:
+    # highlighting-macros:
+    # listings:
+
+knitr:
+  opts_chunk: 
+    fig.align: "center"
+    fig.pos: "H"
+    fig.width: 9 
+    fig.height: 6.5
+    warning: FALSE
+    echo: FALSE
+    scipen: 999
+    tidy.opts:
+      width.cutoff: 60
+       

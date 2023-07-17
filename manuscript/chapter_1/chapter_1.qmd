@@ -1,0 +1,15 @@
+# Some chapter title
+
+\lipsum[1]
+
+## Section 1
+
+\lipsum[2-3]
+
+### Sub-section 1
+
+\lipsum[4]
+
+### Sub-section 2
+
+We can cite items using markdown syntax: @book1 and @misc1 !
