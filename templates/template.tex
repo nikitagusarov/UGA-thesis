@@ -1,0 +1,687 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode$for(hyperrefoptions)$,$hyperrefoptions$$endfor$}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+$if(colorlinks)$
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+$endif$
+$if(CJKmainfont)$
+\PassOptionsToPackage{space}{xeCJK}
+$endif$
+
+% Document class options
+\documentclass[
+$if(fontsize)$
+  $fontsize$,
+$else$
+  12pt
+$endif$
+A4,
+$if(beamer)$
+  ignorenonframetext,
+$if(handout)$
+  handout,
+$endif$
+$if(aspectratio)$
+  aspectratio=$aspectratio$,
+$endif$
+$endif$
+$for(classoption)$
+  $classoption$$sep$,
+$endfor$
+]{$documentclass$}
+
+% Main font for the document
+% \usepackage{helvet}
+\usepackage{libertinus}
+% Different font for headings
+% Still buggy, so not used
+% \usepackage{sectsty}
+% \allsectionsfont{\fontfamily{Cambria}\selectfont}
+% \renewcommand{\rmdefault}{\sfdefault}
+
+% Headers and footers in thesis
+\usepackage{fancyhdr}
+\usepackage{etoolbox}
+\patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
+
+% Linestretch
+$if(linestretch)$
+  \usepackage{setspace}
+$endif$
+
+% TeX version specific params
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[$if(fontenc)$$fontenc$$else$T1$endif$]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+$if(mathspec)$
+  \ifXeTeX
+    \usepackage{mathspec}
+  \else
+    \usepackage{unicode-math}
+  \fi
+$else$
+  \usepackage{unicode-math}
+$endif$
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+$if(mainfont)$
+  \setmainfont[$for(mainfontoptions)$$mainfontoptions$$sep$,$endfor$]{$mainfont$}
+$endif$
+$if(sansfont)$
+  \setsansfont[$for(sansfontoptions)$$sansfontoptions$$sep$,$endfor$]{$sansfont$}
+$endif$
+$if(monofont)$
+  \setmonofont[$for(monofontoptions)$$monofontoptions$$sep$,$endfor$]{$monofont$}
+$endif$
+$for(fontfamilies)$
+  \newfontfamily{$fontfamilies.name$}[$for(fontfamilies.options)$$fontfamilies.options$$sep$,$endfor$]{$fontfamilies.font$}
+$endfor$
+$if(mathfont)$
+$if(mathspec)$
+  \ifXeTeX
+    \setmathfont(Digits,Latin,Greek)[$for(mathfontoptions)$$mathfontoptions$$sep$,$endfor$]{$mathfont$}
+  \else
+    \setmathfont[$for(mathfontoptions)$$mathfontoptions$$sep$,$endfor$]{$mathfont$}
+  \fi
+$else$
+  \setmathfont[$for(mathfontoptions)$$mathfontoptions$$sep$,$endfor$]{$mathfont$}
+$endif$
+$endif$
+
+% CJK
+$if(CJKmainfont)$
+  \ifXeTeX
+    \usepackage{xeCJK}
+    \setCJKmainfont[$for(CJKoptions)$$CJKoptions$$sep$,$endfor$]{$CJKmainfont$}
+  \fi
+$endif$
+$if(luatexjapresetoptions)$
+  \ifLuaTeX
+    \usepackage[$for(luatexjapresetoptions)$$luatexjapresetoptions$$sep$,$endfor$]{luatexja-preset}
+  \fi
+$endif$
+$if(CJKmainfont)$
+  \ifLuaTeX
+    \usepackage[$for(luatexjafontspecoptions)$$luatexjafontspecoptions$$sep$,$endfor$]{luatexja-fontspec}
+    \setmainjfont[$for(CJKoptions)$$CJKoptions$$sep$,$endfor$]{$CJKmainfont$}
+  \fi
+$endif$
+\fi
+
+% Zero width
+$if(zero-width-non-joiner)$
+%% Support for zero-width non-joiner characters.
+\makeatletter
+\def\zerowidthnonjoiner{%
+  % Prevent ligatures and adjust kerning, but still support hyphenating.
+  \texorpdfstring{%
+    \textormath{\nobreak\discretionary{-}{}{\kern.03em}%
+      \ifvmode\else\nobreak\hskip\z@skip\fi}{}%
+  }{}%
+}
+\makeatother
+\ifPDFTeX
+  \DeclareUnicodeCharacter{200C}{\zerowidthnonjoiner}
+\else
+  \catcode`^^^^200c=\active
+  \protected\def ^^^^200c{\zerowidthnonjoiner}
+\fi
+%% End of ZWNJ support
+$endif$
+
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[$for(microtypeoptions)$$microtypeoptions$$sep$,$endfor$]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+
+% Indent
+$if(indent)$
+$else$
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+$endif$
+
+% Verbatim in note
+$if(verbatim-in-note)$
+  \usepackage{fancyvrb}
+$endif$
+
+% Colors
+\usepackage{xcolor}
+
+% Listings
+$if(listings)$
+  \usepackage{listings}
+  \newcommand{\passthrough}[1]{#1}
+  \lstset{defaultdialect=[5.3]Lua}
+  \lstset{defaultdialect=[x86masm]Assembler}
+$endif$
+
+% LSH
+$if(lhs)$
+  \lstnewenvironment{code}{\lstset{language=Haskell,basicstyle=\small\ttfamily}}{}
+$endif$
+
+% Highlighting macros
+$if(highlighting-macros)$
+  $highlighting-macros$
+$endif$
+
+% Pandoc tables (might be better to add as separate package)
+$if(tables)$
+  \usepackage{longtable,booktabs,array}
+  $if(multirow)$
+    \usepackage{multirow}
+  $endif$
+  \usepackage{calc} % for calculating minipage widths
+  % Correct order of tables after \paragraph or \subparagraph
+  \usepackage{etoolbox}
+  \makeatletter
+  \patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+  \makeatother
+  % Allow footnotes in longtable head/foot
+  \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+  \makesavenoteenv{longtable}
+$endif$
+
+% Pandoc graphics (might be better to add as separate package)
+$if(graphics)$
+  \usepackage{graphicx}
+  \makeatletter
+  \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+  \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+  \makeatother
+  % Scale images if necessary, so that they will not overflow the page
+  % margins by default, and it is still possible to overwrite the defaults
+  % using explicit options in \includegraphics[width, height, ...]{}
+  \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+  % Set default figure placement to htbp
+  \makeatletter
+  \def\fps@figure{htbp}
+  \makeatother
+$endif$
+
+% Make links footnotes instead of hotlinks:
+$if(links-as-notes)$
+  \DeclareRobustCommand{\href}[2]{#2\footnote{\url{#1}}}
+$endif$
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% Section numbering
+$if(numbersections)$
+  \setcounter{secnumdepth}{$if(secnumdepth)$$secnumdepth$$else$5$endif$}
+$else$
+  \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+$endif$
+
+% Block headings
+$if(block-headings)$
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+$endif$
+
+% Pagestyle
+$if(pagestyle)$
+  \pagestyle{$pagestyle$}
+$endif$
+
+% CSL references
+$if(csl-refs)$
+  \newlength{\cslhangindent}
+  \setlength{\cslhangindent}{1.5em}
+  \newlength{\csllabelwidth}
+  \setlength{\csllabelwidth}{3em}
+  \newlength{\cslentryspacingunit} % times entry-spacing
+  \setlength{\cslentryspacingunit}{\parskip}
+  \newenvironment{CSLReferences}[2] % #1 hanging-ident, #2 entry spacing
+  {% don't indent paragraphs
+    \setlength{\parindent}{0pt}
+    % turn on hanging indent if param 1 is 1
+    \ifodd #1
+    \let\oldpar\par
+    \def\par{\hangindent=\cslhangindent\oldpar}
+    \fi
+    % set entry spacing
+    \setlength{\parskip}{#2\cslentryspacingunit}
+  }%
+  {}%
+  \usepackage{calc}
+  \newcommand{\CSLBlock}[1]{#1\hfill\break}
+  \newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{#1}}
+  \newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{#1}\break}
+  \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+$endif$
+
+% Language settings
+$if(lang)$
+  \ifLuaTeX
+  \usepackage[bidi=basic]{babel}
+  \else
+  \usepackage[bidi=default]{babel}
+  \fi
+  $if(babel-lang)$
+    \babelprovide[main,import]{$babel-lang$}
+  $endif$
+  $for(babel-otherlangs)$
+    \babelprovide[import]{$babel-otherlangs$}
+  $endfor$
+  % get rid of language-specific shorthands (see #6817):
+  \let\LanguageShortHands\languageshorthands
+  \def\languageshorthands#1{}
+$endif$
+
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+% Dir
+$if(dir)$
+\ifPDFTeX
+  \TeXXeTstate=1
+  \newcommand{\RL}[1]{\beginR #1\endR}
+  \newcommand{\LR}[1]{\beginL #1\endL}
+  \newenvironment{RTL}{\beginR}{\endR}
+  \newenvironment{LTR}{\beginL}{\endL}
+\fi
+$endif$
+
+% Nocite list
+$if(nocite-ids)$
+  \nocite{$for(nocite-ids)$$it$$sep$, $endfor$}
+$endif$
+
+% CS quaotes
+$if(csquotes)$
+  \usepackage{csquotes}
+$endif$
+
+% Bookmarks and URL
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+
+% Verbatim
+$if(verbatim-in-note)$
+  \VerbatimFootnotes % allow verbatim text in footnotes
+$endif$
+
+% Title
+$if(title)$
+  \title{$title$}
+$endif$
+
+% Author
+$if(author)$
+\def\author{$for(author)$$author$$sep$ \par $endfor$}
+$endif$
+
+% Date
+\date{$date$}
+
+% Draft watermarks
+$if(draft)$
+  \usepackage{draftwatermark}
+  \SetWatermarkText{DRAFT}
+  \SetWatermarkLightness{0.9}
+$endif$
+
+% Website hyperlinks for different elements
+\def\uga{https://www.univ-grenoble-alpes.fr/}
+\def\ginp{https://www.grenoble-inp.fr/}
+\def\feg{https://economie.univ-grenoble-alpes.fr/}
+\def\gael{https://gael.univ-grenoble-alpes.fr/}
+\def\gscop{https://g-scop.grenoble-inp.fr/}
+\def\cnrs{https://www.cnrs.fr/}
+\def\inrae{https://www.inrae.fr/}
+
+% Red and grey colors of the UGA logo (blue and orange in fact)
+% \definecolor{ugablue}{HTML}{264062}
+% \definecolor{ugared}{HTML}{E96112}
+\definecolor{ugablue}{HTML}{152d44}
+\definecolor{ugared}{HTML}{f75816}
+\definecolor{ugagrey}{HTML}{84949c}
+\definecolor{ugaorange}{HTML}{f79216}
+\definecolor{ugayellow}{HTML}{F7C816}
+\definecolor{ugagreen}{HTML}{4a9e20}
+\definecolor{ugapurple}{HTML}{9e2089}
+
+% Some tests and other color suggestions
+% # Blue
+% "#152d44",
+% "#442C15", # Complementary
+% "#151544", "#154444", # Analogous
+% # Orange
+% "#f75816",
+% "#16B5F7", # Complementary
+% "#F7C816", "#F71644", # Analogous
+% # Other 1
+% "#9e2089", # Analogous
+% "#899e20", # Triadic
+% # Grey
+% "#84949c",
+% # Other 2
+% "#9e2089", "#415c70", # Analogous
+% "#442615", "#16d2f7", "#9c8c84", # Complementary
+% # Yellow
+% "#cfb418",
+% # Other 3
+% "#4a9e20", "#f79216", # Analogous
+% "#442615", "#16d2f7", "#9916f7", # Complementary
+% # White
+% "#ffffff",
+% # Other (no generator)
+% "#a13163"
+
+% Hyper setup
+\hypersetup{
+  $if(title-meta)$
+    pdftitle={$title-meta$},
+  $endif$
+  $if(author-meta)$
+    pdfauthor={$author-meta$},
+  $endif$
+  $if(lang)$
+    pdflang={$lang$},
+  $endif$
+  $if(subject)$
+    pdfsubject={$subject$},
+  $endif$
+  $if(keywords)$
+    pdfkeywords={$for(keywords)$$keywords$$sep$, $endfor$},
+  $endif$
+  $if(colorlinks)$
+    colorlinks=true,
+    linkcolor={$if(linkcolor)$$linkcolor$$else$ugared$endif$},
+    filecolor={$if(filecolor)$$filecolor$$else$ugared$endif$},
+    citecolor={$if(citecolor)$$citecolor$$else$ugablue$endif$},
+    urlcolor={$if(urlcolor)$$urlcolor$$else$ugablue$endif$},
+  $else$
+    hidelinks,
+  $endif$
+  pdfcreator={LaTeX via pandoc}%
+}
+
+% TOC
+%% Load shorttoc for separate summary and TOC
+\usepackage{shorttoc}
+%% Define LOF and LOT, adjust levels
+\usepackage{tocbasic}
+\renewcommand*\listoffigures{\listoftoc[{\listfigurename}]{lof}}
+\renewcommand*\listoftables{\listoftoc[{\listtablename}]{lot}}
+\setuptoc{lof}{leveldown}
+\setuptoc{lot}{leveldown}
+
+% Geometry
+\usepackage[top=2cm, bottom=2cm, left=3cm, right=2cm]{geometry}
+
+% Text alignment features
+\usepackage{ragged2e}
+
+% Title page
+\usepackage[pages=some]{background}
+\newcommand*{\bordersp}{8mm}
+\newcommand{\MyTikzBoarder}{%
+\begin{tikzpicture}[remember picture,overlay,draw=ugablue]
+    \draw (\bordersp,-\bordersp) -- (\textwidth+\bordersp,-\bordersp) -- (\textwidth+\bordersp,-\textheight-\bordersp) -- (\bordersp,-\textheight-\bordersp) -- cycle;
+ \end{tikzpicture}
+}
+\SetBgContents{\MyTikzBoarder}% Set tikz picture
+\SetBgPosition{current page.north west}% Select location
+\SetBgOpacity{1.0}
+\SetBgAngle{0.0}
+\SetBgScale{1.0}
+% Main titlepage part
+\makeatletter
+\renewcommand{\maketitle}{%
+  \BgThispage
+  \newgeometry{margin=8mm}
+  \pagestyle{empty}
+  \begin{titlepage}
+  \noindent
+  % \vspace{-5mm}
+  \begin{minipage}[b]{33mm}%
+    \includegraphics[width=\linewidth]{./logos/sidebar-uga.png}%
+    \strut%
+  \end{minipage}%
+  \hspace{5mm}%
+  \begin{minipage}[b][\textheight][b]{\textwidth - 33mm - 5mm - 5mm}%
+  $if(logos)$
+    \vspace{3mm}%
+    \flushright
+    $for(logos)$
+      \includegraphics[height=21mm]{./logos/logo-$it$.png}\hspace{5mm}%
+    $endfor$
+    \par%
+  $endif$
+  % Preset title body
+  \vspace{-12mm}
+  \flushleft
+  % General intro
+  {\LARGE THÈSE}\par%
+  \vspace{4mm}
+  {\large Pour obtenir le grade de}\par%
+  \vspace{5mm}
+  \hspace{2cm}\textbf{\Large DOCTEUR DE L’UNIVERSITÉ GRENOBLE ALPES}\par%
+  \vspace{5mm}
+  % Doctoral school
+  $if(ed)$
+    {\large École doctorale :} {$ed$} \par%
+  $endif$
+  % Speciality
+  $if(spec)$
+    {\large Spécialité :} {$spec$} \par%
+  $endif$
+  % Research lab
+  $if(ur)$
+    {\large Unité de recherche :} {$ur$} \par%
+  $endif$
+  % Title part
+  $if(title-fr)$
+  \vspace{5mm}
+    \textbf{\LARGE $title-fr$}\par%
+    \vspace{3mm}
+  $endif$
+  $if(title)$
+    \textbf{\LARGE \@title}\par%
+  $endif$
+  % Author
+  $if(author)$
+  \vspace{4mm}
+  {\large Presenté par:}\par%
+    \vspace{3mm}
+    \textbf{\Large \author}\par%
+  $endif$
+  % Direction
+  $if(director)$
+  \vspace{4mm}
+  \textcolor{ugared}{\large Direction de thèse :}\par%
+    \vspace{1mm}%
+    \mbox{\textcolor{ugared}{\vrule width 1pt} \hspace{2mm}%
+      \begin{minipage}[t]{\textwidth}
+        \textbf{\Large $director.name$}\hfill{\Large Directeur de thèse \hspace{5mm}}\par%
+        {\Large $director.affiliation$}\par%
+        $if(co-director)$
+        \vspace{3mm}
+        \textbf{\Large $co-director.name$}\hfill{\Large Co-encadrant de thèse \hspace{5mm}}\par%
+        {\Large $co-director.affiliation$}\par%
+        \vspace{3mm}
+        $endif$%
+      \end{minipage}%
+    }\par%
+  $endif$
+  % Rapporteurs
+  $if(rapporteurs)$
+  \vspace{3mm}%
+  \textcolor{ugared}{\large Rapporteurs :}\par%
+      \vspace{1mm}%
+    \mbox{\textcolor{ugared}{\vrule width 1pt} \hspace{2mm}%
+      \begin{minipage}[t]{\textwidth}
+        $for(rapporteurs)$
+        \textbf{\Large $it.name$}\hfill{\Large}\par%
+        {\Large $it.affiliation$}\par%
+        \vspace{3mm}
+        $endfor$%
+    \end{minipage}%
+    }\par%
+  $endif$\par%
+  % Soutenance
+  $if(soutenance-date)$
+  \vspace{3mm}
+  \textcolor{ugared}{\large Thèse soutenue publiquement le $soutenance-date$, devant le jury composé de :}\par%
+    \vspace{1mm}%
+    \mbox{\textcolor{ugared}{\vrule width 1pt} \hspace{2mm}%
+      \begin{minipage}[t]{\textwidth}
+        $for(rapporteurs)$
+        \textbf{\Large $it.name$}\hfill{\Large Rapporteur \hspace{5mm}}\par%
+        {\Large $it.affiliation$}\par%
+        \vspace{3mm}
+        $endfor$%
+        $if(examinateurs)$
+        $for(examinateurs)$
+        \textbf{\Large $it.name$}\hfill{\Large Examinateur \hspace{5mm}}\par%
+        {\Large $it.affiliation$}\par%
+        \vspace{3mm}
+        $endfor$%
+        $endif$
+        $if(director)$
+        \textbf{\Large $director.name$}\hfill{\Large Directeur de thèse \hspace{5mm}}\par%
+        {\Large $director.affiliation$}\par%
+        \vspace{3mm}
+        $endif$
+        $if(invites)$
+        $for(invites)$
+        \textbf{\Large $it.name$}\hfill{\Large Invité \hspace{5mm}}\par%
+        {\Large $it.affiliation$}\par%
+        \vspace{3mm}
+        $endfor$%
+        $endif$
+        \strut%
+    \end{minipage}%
+    }\par%
+  $endif$\par%
+  \vfill%
+  \strut%
+  \end{minipage}%
+  \vfill
+  \end{titlepage}
+  \restoregeometry
+}
+\makeatother
+
+% Header includes
+$for(header-includes)$
+  $header-includes$
+$endfor$
+
+% Begin the document
+\begin{document}
+
+% Add front matter if required
+$if(has-frontmatter)$
+  \frontmatter
+$endif$
+
+% Create titlepage
+$if(title)$
+  \maketitle
+$endif$
+
+% Include before
+$for(include-before)$
+  $include-before$
+$endfor$
+
+$if(toc)$
+  $if(toc-title)$
+    \renewcommand*\contentsname{$toc-title$}
+  $endif$
+  {
+  $if(colorlinks)$
+    \hypersetup{linkcolor=$if(toccolor)$$toccolor$$else$$endif$}
+  $endif$
+  \renewcommand*\contentsname{\centering Table of contents}%
+  \setcounter{tocdepth}{10}%
+  }
+$endif$
+
+% Linestretch controls
+$if(linestretch)$
+  \setstretch{$linestretch$}
+$endif$
+
+% Preface
+\chapter*{\begin{center}Preface\end{center}}
+\pagenumbering{roman}
+\pagestyle{fancyplain}
+\fancyhead[L]{\chaptermark}
+\fancyfoot[C]{\thepage}
+\fancyfoot[R]{}
+\flushright
+$if(epigraphe)$
+  \vfill
+  $epigraphe$
+$endif$
+$if(dedicace)$
+  \vfill
+  \textit{$dedicace$}
+$endif$
+\vfill
+
+% Reset page filling style
+\flushleft
+\justify
+
+% Summary (short TOC)
+\shorttableofcontents{\hfill Summary \hfill}{2}
+
+% Restore page numbering
+\pagenumbering{arabic}
+\pagestyle{fancyplain}
+\fancyhead[L]{\chaptermark}
+\fancyfoot[C]{}
+\fancyfoot[R]{\thepage}
+
+% Main body
+$body$
+
+% Add TOC
+\newpage
+\phantomsection
+\addcontentsline{toc}{chapter}{Table of contents}
+\tableofcontents
+
+% Add backmatter
+$if(has-frontmatter)$
+  \backmatter
+$endif$
+
+% Include after
+$for(include-after)$
+  $include-after$
+$endfor$
+
+\end{document}
+% En of the document

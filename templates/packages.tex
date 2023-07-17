@@ -1,0 +1,95 @@
+%%%%%%%%%%%%%%%%%
+% Load Packages %
+%%%%%%%%%%%%%%%%%
+
+% Spacings
+\usepackage{setspace}
+
+% Tables
+\usepackage{longtable}
+\usepackage{tabu}
+
+% Code and algorithms
+\usepackage{algorithm}
+\usepackage{algpseudocode}  
+\def\Endif{\EndIf}
+
+% Declare argmin / argmax
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% Floats
+\usepackage{morefloats}
+\usepackage{float}
+\usepackage{placeins}
+
+% Highlighting
+\usepackage{soul}
+
+% Horizontal page position
+\usepackage{pdflscape}
+
+% Append pdfs
+\usepackage{pdfpages}
+
+% Add latex chunks
+\usepackage{docmute}
+
+% Short toc
+\usepackage{shorttoc}
+
+% Array
+\usepackage{array}
+
+% Multiple columns
+\usepackage{multicol}
+
+% Image insertion and colors
+\usepackage{graphicx}
+
+% Latex comments
+\newenvironment{dummy}{}{}
+
+% Drawing
+% Tikz
+\usepackage{tikz}
+\usetikzlibrary{matrix,chains,decorations.pathreplacing}
+\usetikzlibrary{shapes,arrows,arrows.meta}
+\usetikzlibrary{fit,positioning}
+\usepackage[edges]{forest}
+\usepackage{calc}
+% Pgfplots
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+% Layers declaration
+\pgfdeclarelayer{nodelayer}
+\pgfdeclarelayer{edgelayer}
+\pgfsetlayers{edgelayer,nodelayer,main} 
+
+% Dcolumn for stargazer
+\usepackage{dcolumn}
+
+% Makecell for composite tab cells
+\usepackage{makecell}
+
+% Subfigures and subcaptions
+\usepackage{subcaption}
+\usepackage[export]{adjustbox}
+
+% Columns (cols environment)
+% This part is essential for multicol syntax with Rmarkdown
+% Quarto has separate syntex for multicol
+\newenvironment{cols}[1][]{}{}
+\newenvironment{col}[1]{\begin{minipage}{#1}\ignorespaces}{%
+\end{minipage}
+\ifhmode\unskip\fi
+\aftergroup\useignorespacesandallpars}%
+\def\useignorespacesandallpars#1\ignorespaces\fi{%
+#1\fi\ignorespacesandallpars}%
+\makeatletter
+\def\ignorespacesandallpars{%
+  \@ifnextchar\par
+    {\expandafter\ignorespacesandallpars\@gobble}%
+    {}%
+}
+\makeatother
